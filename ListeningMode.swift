@@ -85,6 +85,7 @@ struct PopUpView: View {
     @EnvironmentObject var sheetManager: SheetManager
     @EnvironmentObject var soundsList: SoundsList
     @EnvironmentObject var sheetManagerListen: SheetManager
+    private var nature = Set(["Brook", "Wind", "Birds", "Waves"])
     
     
     init(recList: Binding<[String]>, tabSelection: Binding<Int>, audioRecorder: AudioRecorder, didClose: @escaping () -> Void){
@@ -96,12 +97,32 @@ struct PopUpView: View {
         print(self.recList)
     }
     
+    private func getColor(color: String) -> Color{
+        let baseColour: Color
+        switch color {
+        case "White": baseColour = Color.gray
+        case "Purple": baseColour = Color.purple
+        case "Blue": baseColour = Color.blue
+        case "Red": baseColour = Color.red
+        case "Orange": baseColour = Color.orange
+        case "Pink": baseColour = Color.pink
+        case "Yellow": baseColour = Color.yellow
+        case "Green": baseColour = Color.green
+        case "Brown": baseColour = Color.brown
+        default: baseColour = Color.clear
+        }
+        return baseColour
+    }
+    
     var body: some View{
         
         VStack {
             Text("Recommendation")
             ForEach(recList.indices, id: \.self){ index in
                 Text(recList[index])
+                    .background(RoundedRectangle(cornerRadius: 8)
+                        .fill(getColor(color: recList[index]).opacity(0.8))
+                        .frame(width: 200))
                     .font(.title)
                     .padding()
             }
@@ -118,6 +139,7 @@ struct PopUpView: View {
                 Text("GO")
             }
         }
+        .frame(width: 240, height: 160)
         .padding()
         .multilineTextAlignment(.center)
         .background(RoundedRectangle(cornerRadius: 10)
